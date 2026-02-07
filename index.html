@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale= 1.0">
+        <title>GlowLab and Essentials</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+    <body>
+        <header>
+            <div class="container">
+            <div class="logo">
+            <h1><i class="fas fa-spa"></i>GlowLab and Essentials</h1>
+            <p>Science-backed skincare</p></div>
+            
+            <nav>
+                <a href="index.html" class="active"><i class="fas fa-home"></i>Home</a>
+                <a href="#products"><i class="fas fa-shopping-bag"></i>Shop</a>
+                <a href="#blog"><i class="fas fa-blog"></i>Blog</a>
+                <a href="#about"><i class="fas fa-info-circle"></i>About</a>
+                <a href="#cart" class="cart-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count">0</span></a>
+            </nav>
+            </div>
+        </header>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Your Skin's best day starts here</h2>
+                <p>Science-backed skincare products + expert guidance</p>
+                <div class="hero-btns">
+                    <a href="#products" class="btn-primary">Shop Now</a>
+                    <a href="#blog" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="products">
+            <div class="container">
+                <h2><i class="fas fa-star"></i>Best Sellers</h2>
+                <p class="section-subtitle">Customer favourites for radiant skin</p>
+                <div class="products-grid">
+                    <!-- Product 1: Vitamin C Serum -->
+                    <div class="product-card">
+                        <div class="product-badge">Best Seller</div>
+                        <img src="https://images.unsplash.com/photo-1556228578-9c360e1d8d34?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Vitamin C Serum with amber glass bottles and orange slices"
+                        class="product-image">
+                        <h3>Vitamin C Brightening Serum</h3>
+                        <p class="product-desc">Antioxidant protection + radiance boost. Contains 10% L-ascorbic acid.</p>
+                        <div class="product-price">R570.00</div>
+                        <button class="add-to-cart" data-id="1" data-name="Vitamin C Serum" data-price="570">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 2: Hyaluronic Acid Moisturizer -->
+                    <div class="product-card">
+                        <div class="product-badge">New</div>
+                        <img src="https://images.unsplash.com/photo-1629203851120-05c6796c6e8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Hyaluronic Acid moisturizer with molecular structure background"
+                        class="product-image">
+                        <h3>Hyaluronic Acid Moisturizer</h3>
+                        <p class="product-desc">72-hour hydration. Plumps, soothes and smooths fine lines.</p>
+                        <div class="product-price">R450.00</div>
+                        <button class="add-to-cart" data-id="2" data-name="Hyaluronic Acid" data-price="450">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>  
+                    </div>
+
+                    <!-- Product 3: Retinol Night Cream -->
+                    <div class="product-card">
+                        <div class="product-badge">Premium</div>
+                        <img src="https://images.unsplash.com/photo-1631217868264-e5b8cc5f2c5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Retinol serum bottle with molecular structures"
+                        class="product-image">
+                        <h3>Retinol Night Cream</h3>
+                        <p class="product-desc">Anti-aging treatment. Renews skin and increases skin turnover rate overnight.</p>
+                        <div class="product-price">R830.00</div>
+                        <button class="add-to-cart" data-id="3" data-name="Retinol Night Cream" data-price="830">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 4: Mineral Sunscreen -->
+                    <div class="product-card">
+                        <div class="product-badge">Sale</div>
+                        <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Mineral sunscreen bottle being held by hand"
+                        class="product-image">
+                        <h3>Mineral Sunscreen SPF 50</h3>
+                        <p class="product-desc">Broad spectrum protection. Non-greasy and non-comedogenic formula.</p>
+                        <div class="product-price">R360.00</div>
+                        <button class="add-to-cart" data-id="4" data-name="Mineral Sunscreen SPF 50" data-price="360">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 5: Cleanser -->
+                    <div class="product-card">
+                        <div class="product-badge">Gentle</div>
+                        <img src="https://images.unsplash.com/photo-1561043433-aaf687c4cf07?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Person washing hands with facial cleanser"
+                        class="product-image">
+                        <h3>Gentle Foaming Cleanser</h3>
+                        <p class="product-desc">pH balanced cleanser that removes impurities without stripping skin.</p>
+                        <div class="product-price">R320.00</div>
+                        <button class="add-to-cart" data-id="5" data-name="Gentle Cleanser" data-price="320">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 6: Eye Cream -->
+                    <div class="product-card">
+                        <div class="product-badge">Luxury</div>
+                        <img src="https://images.unsplash.com/photo-1592417817038-d13fd7342605?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Woman applying eye cream with bunny ears headband"
+                        class="product-image">
+                        <h3>Luxury Eye Cream</h3>
+                        <p class="product-desc">Reduces dark circles and puffiness. Caffeine and peptides formula.</p>
+                        <div class="product-price">R650.00</div>
+                        <button class="add-to-cart" data-id="6" data-name="Eye Cream" data-price="650">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 7: Face Oil -->
+                    <div class="product-card">
+                        <div class="product-badge">Organic</div>
+                        <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Clear glass bottle with yellow facial oil"
+                        class="product-image">
+                        <h3>Organic Facial Oil</h3>
+                        <p class="product-desc">100% natural oils blend. Rosehip, jojoba and argan for glowing skin.</p>
+                        <div class="product-price">R480.00</div>
+                        <button class="add-to-cart" data-id="7" data-name="Facial Oil" data-price="480">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+
+                    <!-- Product 8: Starter Kit -->
+                    <div class="product-card">
+                        <div class="product-badge">Bundle</div>
+                        <img src="https://images.unsplash.com/photo-1591369822094-9cb5c6dba1e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" 
+                        alt="Skincare Starter Kit with multiple products"
+                        class="product-image">
+                        <h3>Complete Starter Kit</h3>
+                        <p class="product-desc">Cleanser + Serum + Moisturizer + Sunscreen. Perfect for beginners.</p>
+                        <div class="product-price">R1,850.00</div>
+                        <button class="add-to-cart" data-id="8" data-name="Starter Kit" data-price="1850">
+                            <i class="fas fa-cart-plus"></i>Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--Shopping Cart Sidebar-->
+        <div class="cart-sidebar" id="cart">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i>Your Cart</h3>
+                <button class="close-cart">&times;</button>
+            </div>
+
+            <div class="cart-items">
+                <p class="empty-cart">Your cart is empty</p>
+            </div>
+
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total:</span>
+                    <span class="total-amount">R0.00</span>
+                </div>
+                <button class="checkout-btn">Proceed to Checkout</button>
+                <button class="clear-cart">Clear Cart</button>
+            </div>
+        </div>
+
+        <!-- Blog Section with Images -->
+        <section class="section blog-section" id="blog">
+            <div class="container">
+                <h2><i class="fas fa-pen-nib"></i>Skincare Education</h2>
+                <p class="section-subtitle">Learn before you shop</p>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
+                        alt="Woman doing morning skincare routine"
+                        class="blog-image">
+                        <div class="blog-content">
+                            <h3>The Morning Routine that is a Game Changer</h3>
+                            <p class="blog-meta">By Dr. Sarah Chen • 5 min read</p>
+                            <p>Learn the 3 essential steps every morning routine needs for glowing skin all day!</p>
+                            <a href="#" class="read-more">Read Article →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <img src="https://images.unsplash.com/photo-1595272562063-0cbb7d64b7fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
+                        alt="Retinol serum on counter"
+                        class="blog-image">
+                        <div class="blog-content">
+                            <h3>Retinol: Beginner's Guide</h3>
+                            <p class="blog-meta">By The GlowLab Team • 7 min read</p>
+                            <p>How to incorporate retinol safely without irritation. Start slow and go steady!</p>
+                            <a href="#" class="read-more">Read Article →</a>
+                        </div>
+                    </article>
+
+                    <article class="blog-card">
+                        <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
+                        alt="Natural skincare ingredients"
+                        class="blog-image">
+                        <div class="blog-content">
+                            <h3>Ingredients to Avoid on Sensitive Skin</h3>
+                            <p class="blog-meta">By Dr. Zulu of GlowLab Team • 5 min read</p>
+                            <p>Common irritants and what to look for instead. Your sensitive skincare guide.</p>
+                            <a href="#" class="read-more">Read Article →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section about-section" id="about">
+            <div class="container">
+                <h2><i class="fas fa-heart"></i>About GlowLab</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>Science Meets Self-Care</h3>
+                        <p>We believe skincare should be both effective and educational. Every product is:</p>
+                        <ul>
+                            <li><strong>Clinically Tested</strong> for safety and results</li>
+                            <li><strong>Transparently formulated</strong> with clean ingredients</li>
+                            <li><strong>Backed by education</strong> to help you make informed choices</li>
+                        </ul>
+                        <p>Shop with confidence, learn with every purchase.</p>
+                    </div>
+
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h4>10,000+</h4>
+                            <p>Satisfied Customers</p>
+                        </div>
+
+                        <div class="stat">
+                            <h4>48-Hour</h4>
+                            <p>Shipping Guarantee</p>
+                        </div>
+
+                        <div class="stat">
+                            <h4>60-Day</h4>
+                            <p>Money Back Guarantee</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-col">
+                        <h3><i class="fas fa-spa"></i>GlowLab</h3>
+                        <p>Premium skincare meets education. Your journey to better skin starts here.</p>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Quick links</h4>
+                        <a href="#products">Shop Products</a>
+                        <a href="#blog">Skincare Blog</a>
+                        <a href="#about">Our Story</a>
+                        <a href="#">Contact Us</a>
+                    </div>
+
+                    <div class="footer-col">
+                        <h4>Connect</h4>
+                        <a href="#"><i class="fab fa-instagram"></i>Instagram</a>
+                        <a href="#"><i class="fab fa-tiktok"></i>TikTok</a>
+                        <a href="#"><i class="fab fa-youtube"></i>YouTube</a>
+                        <a href="#"><i class="fab fa-pinterest"></i>Pinterest</a>
+                    </div>
+                </div>
+
+                <div class="footer-bottom">
+                    <p>&#169; 2026 GlowLab Skincare. This is a demo website for educational purposes</p>
+                    <p>Made with <i class="fas fa-heart" style="color: #e84393;"></i></p>
+                </div>
+            </div>
+        </footer>
+        <!-- JavaScript -->
+         <script src="script.js"></script>
+    </body>
+</html>
