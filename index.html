@@ -25,7 +25,7 @@
         </header>
         <section class="hero">
             <div class="hero-content">
-                <h2>Your Skin's best day starts here</h2>
+                <h2>Your Skin's Best Day Starts Here</h2>
                 <p>Science-backed skincare products + expert guidance</p>
                 <div class="hero-btns">
                     <a href="#products" class="btn-primary">Shop Now</a>
@@ -175,24 +175,26 @@
             </div>
         </div>
 
-        <!-- Blog Section with Images -->
+        <!-- Blog Section with Actual Articles -->
         <section class="section blog-section" id="blog">
             <div class="container">
                 <h2><i class="fas fa-pen-nib"></i>Skincare Education</h2>
                 <p class="section-subtitle">Learn before you shop</p>
                 <div class="blog-grid">
+                    <!-- Article 1 -->
                     <article class="blog-card">
                         <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
                         alt="Woman doing morning skincare routine"
                         class="blog-image">
                         <div class="blog-content">
-                            <h3>The Morning Routine that is a Game Changer</h3>
+                            <h3>The Morning Routine That Changed My Skin</h3>
                             <p class="blog-meta">By Dr. Sarah Chen • 5 min read</p>
                             <p>Learn the 3 essential steps every morning routine needs for glowing skin all day!</p>
-                            <a href="#" class="read-more">Read Article →</a>
+                            <a href="#article1" class="read-more" data-article="1">Read Article →</a>
                         </div>
                     </article>
 
+                    <!-- Article 2 -->
                     <article class="blog-card">
                         <img src="https://images.unsplash.com/photo-1595272562063-0cbb7d64b7fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
                         alt="Retinol serum on counter"
@@ -201,24 +203,38 @@
                             <h3>Retinol: Beginner's Guide</h3>
                             <p class="blog-meta">By The GlowLab Team • 7 min read</p>
                             <p>How to incorporate retinol safely without irritation. Start slow and go steady!</p>
-                            <a href="#" class="read-more">Read Article →</a>
+                            <a href="#article2" class="read-more" data-article="2">Read Article →</a>
                         </div>
                     </article>
 
+                    <!-- Article 3 -->
                     <article class="blog-card">
                         <img src="https://images.unsplash.com/photo-1563170351-be82bc888aa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=300&q=80" 
                         alt="Natural skincare ingredients"
                         class="blog-image">
                         <div class="blog-content">
                             <h3>Ingredients to Avoid on Sensitive Skin</h3>
-                            <p class="blog-meta">By Dr S.S. Zulu of GlowLab Team • 5 min read</p>
+                            <p class="blog-meta">By Dr. Zulu of GlowLab Team • 5 min read</p>
                             <p>Common irritants and what to look for instead. Your sensitive skincare guide.</p>
-                            <a href="#" class="read-more">Read Article →</a>
+                            <a href="#article3" class="read-more" data-article="3">Read Article →</a>
                         </div>
                     </article>
                 </div>
             </div>
         </section>
+
+        <!-- Article Modal -->
+        <div class="article-modal" id="articleModal">
+            <div class="article-content">
+                <div class="article-header">
+                    <h3 id="article-title"></h3>
+                    <button class="close-article">&times;</button>
+                </div>
+                <div class="article-body" id="article-body">
+                    <!-- Article content will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </div>
 
         <section class="section about-section" id="about">
             <div class="container">
@@ -281,8 +297,8 @@
                 </div>
 
                 <div class="footer-bottom">
-                    <p>&#169; 2026 GlowLab Skincare. This is a demo website for educational purposes only</p>
-                    <p>Made by GlowLab Pty Ltd<i class="fas fa-heart" style="color: #e84393;"></i></p>
+                    <p>&#169; 2026 GlowLab Skincare. This is a demo website for educational purposes</p>
+                    <p>Made with <i class="fas fa-heart" style="color: #9c4dff;"></i></p>
                 </div>
             </div>
         </footer>

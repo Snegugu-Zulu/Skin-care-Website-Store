@@ -9,13 +9,15 @@ class ShoppingCart {
     
     // Add item to cart - FIXED: Now properly adds all items
     addItem(id, name, price, quantity = 1) {
-        const existingItem = this.items.find(item => item.id === id);
+        // Convert id to string to ensure consistent comparison
+        const itemId = id.toString();
+        const existingItem = this.items.find(item => item.id === itemId);
         
         if (existingItem) {
             existingItem.quantity += quantity;
         } else {
             this.items.push({ 
-                id, 
+                id: itemId, 
                 name, 
                 price: parseFloat(price), 
                 quantity 
@@ -30,7 +32,8 @@ class ShoppingCart {
     
     // Remove item from cart
     removeItem(id) {
-        this.items = this.items.filter(item => item.id !== id);
+        const itemId = id.toString();
+        this.items = this.items.filter(item => item.id !== itemId);
         this.saveCart();
         this.updateCartCount();
         this.renderCart();
@@ -39,11 +42,12 @@ class ShoppingCart {
     
     // Update item quantity
     updateQuantity(id, quantity) {
-        const item = this.items.find(item => item.id === id);
+        const itemId = id.toString();
+        const item = this.items.find(item => item.id === itemId);
         if (item) {
             item.quantity = quantity;
             if (item.quantity <= 0) {
-                this.removeItem(id);
+                this.removeItem(itemId);
             } else {
                 this.saveCart();
                 this.renderCart();
@@ -85,23 +89,28 @@ class ShoppingCart {
     // Update cart count in header
     updateCartCount() {
         const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
-        document.querySelector('.cart-count').textContent = totalItems;
+        const cartCountElement = document.querySelector('.cart-count');
+        if (cartCountElement) {
+            cartCountElement.textContent = totalItems;
+        }
     }
     
-    // Render cart items - FIXED: Now shows all items
+    // Render cart items - FIXED: Now shows all items properly
     renderCart() {
         const cartItems = document.querySelector('.cart-items');
-        const emptyCart = cartItems.querySelector('.empty-cart');
+        const emptyCart = cartItems ? cartItems.querySelector('.empty-cart') : null;
         const totalAmount = document.querySelector('.total-amount');
         
+        if (!cartItems || !totalAmount) return;
+        
         if (this.items.length === 0) {
-            emptyCart.style.display = 'block';
+            if (emptyCart) emptyCart.style.display = 'block';
             cartItems.innerHTML = '<p class="empty-cart">Your cart is empty</p>';
             totalAmount.textContent = this.formatPrice(0);
             return;
         }
         
-        emptyCart.style.display = 'none';
+        if (emptyCart) emptyCart.style.display = 'none';
         
         let cartHTML = '';
         this.items.forEach(item => {
@@ -136,7 +145,7 @@ class ShoppingCart {
     
     // Setup main event listeners
     setupEventListeners() {
-        // Add to cart buttons
+        // Add to cart buttons - FIXED: Event delegation for dynamically added elements
         document.addEventListener('click', (e) => {
             if (e.target.closest('.add-to-cart')) {
                 const button = e.target.closest('.add-to-cart');
@@ -147,52 +156,64 @@ class ShoppingCart {
                 this.addItem(id, name, price);
                 
                 // Add button animation
+                const originalHTML = button.innerHTML;
                 button.innerHTML = '<i class="fas fa-check"></i> Added!';
                 button.style.background = '#27ae60';
                 setTimeout(() => {
-                    button.innerHTML = '<i class="fas fa-cart-plus"></i> Add to Cart';
+                    button.innerHTML = originalHTML;
                     button.style.background = '';
                 }, 1500);
             }
         });
         
         // Cart toggle button
-        document.querySelector('.cart-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelector('.cart-sidebar').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
+        const cartBtn = document.querySelector('.cart-btn');
+        if (cartBtn) {
+            cartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector('.cart-sidebar').classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
         
         // Close cart button
-        document.querySelector('.close-cart').addEventListener('click', () => {
-            document.querySelector('.cart-sidebar').classList.remove('active');
-            document.body.style.overflow = '';
-        });
+        const closeCart = document.querySelector('.close-cart');
+        if (closeCart) {
+            closeCart.addEventListener('click', () => {
+                document.querySelector('.cart-sidebar').classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
         
         // Clear cart button
-        document.querySelector('.clear-cart').addEventListener('click', () => {
-            if (this.items.length > 0 && confirm('Are you sure you want to clear your entire cart?')) {
-                this.clearCart();
-            }
-        });
+        const clearCartBtn = document.querySelector('.clear-cart');
+        if (clearCartBtn) {
+            clearCartBtn.addEventListener('click', () => {
+                if (this.items.length > 0 && confirm('Are you sure you want to clear your entire cart?')) {
+                    this.clearCart();
+                }
+            });
+        }
         
-        // Checkout button - UPDATED: Shows payment modal instead of alert
-        document.querySelector('.checkout-btn').addEventListener('click', () => {
-            if (this.items.length === 0) {
-                alert('Your cart is empty! Add some products first.');
-                return;
-            }
-            
-            // Show payment modal instead of immediate checkout
-            this.showPaymentModal();
-        });
+        // Checkout button - Shows payment modal
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.addEventListener('click', () => {
+                if (this.items.length === 0) {
+                    alert('Your cart is empty! Add some products first.');
+                    return;
+                }
+                
+                this.showPaymentModal();
+            });
+        }
         
         // Close cart when clicking outside
         document.addEventListener('click', (e) => {
             const cart = document.querySelector('.cart-sidebar');
             const cartBtn = document.querySelector('.cart-btn');
             
-            if (cart.classList.contains('active') && 
+            if (cart && cart.classList.contains('active') && 
                 !cart.contains(e.target) && 
                 !cartBtn.contains(e.target)) {
                 cart.classList.remove('active');
@@ -203,8 +224,11 @@ class ShoppingCart {
         // Close cart with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
-                document.querySelector('.cart-sidebar').classList.remove('active');
-                document.body.style.overflow = '';
+                const cart = document.querySelector('.cart-sidebar');
+                if (cart && cart.classList.contains('active')) {
+                    cart.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             }
         });
     }
@@ -306,6 +330,8 @@ class ShoppingCart {
         const paymentOptions = document.querySelectorAll('.payment-option');
         const payBtn = document.querySelector('.pay-btn');
         
+        if (!paymentModal || !closePayment || !payBtn) return;
+        
         // Close modal
         closePayment.addEventListener('click', () => {
             paymentModal.classList.remove('active');
@@ -337,7 +363,8 @@ class ShoppingCart {
                 option.classList.add('selected');
                 // Enable pay button
                 payBtn.disabled = false;
-                payBtn.textContent = `Pay R${this.formatPrice(this.getTotal())} with ${option.querySelector('span').textContent}`;
+                const methodName = option.querySelector('span').textContent;
+                payBtn.textContent = `Pay R${this.formatPrice(this.getTotal())} with ${methodName}`;
             });
         });
         
@@ -363,7 +390,8 @@ class ShoppingCart {
                 
                 // Close modals
                 paymentModal.classList.remove('active');
-                document.querySelector('.cart-sidebar').classList.remove('active');
+                const cart = document.querySelector('.cart-sidebar');
+                if (cart) cart.classList.remove('active');
                 document.body.style.overflow = '';
                 
                 // Show order confirmation
@@ -406,7 +434,231 @@ class ShoppingCart {
     }
 }
 
-// ===== ADDITIONAL WEBSITE FUNCTIONALITY =====
+// ===== ARTICLE SYSTEM =====
+class ArticleSystem {
+    constructor() {
+        this.articles = {
+            1: {
+                title: "The Morning Routine That Changed My Skin",
+                author: "Dr. Sarah Chen",
+                readTime: "5 min read",
+                content: `
+                    <h2>The 3-Step Morning Routine for Glowing Skin</h2>
+                    <p>After years of struggling with dull, tired-looking skin, I discovered a simple morning routine that transformed my complexion. Here are the three essential steps:</p>
+                    
+                    <h3>Step 1: Gentle Cleansing</h3>
+                    <p>Start your day with a gentle, pH-balanced cleanser. Avoid harsh formulas that strip your skin's natural oils. Look for ingredients like:</p>
+                    <ul>
+                        <li><strong>Glycerin:</strong> Hydrates without clogging pores</li>
+                        <li><strong>Ceramides:</strong> Strengthen skin barrier</li>
+                        <li><strong>Green tea extract:</strong> Antioxidant protection</li>
+                    </ul>
+                    
+                    <div class="article-tip">
+                        <strong>Pro Tip:</strong> Use lukewarm water, not hot water, to prevent dryness.
+                    </div>
+                    
+                    <h3>Step 2: Antioxidant Protection</h3>
+                    <p>Vitamin C serum is the star of any morning routine. It provides:</p>
+                    <ul>
+                        <li>Protection against environmental damage</li>
+                        <li>Brightening and evening of skin tone</li>
+                        <li>Boosts collagen production</li>
+                    </ul>
+                    <p>Apply 2-3 drops of Vitamin C serum after cleansing and before moisturizing.</p>
+                    
+                    <h3>Step 3: Moisturize & Protect</h3>
+                    <p>Never skip sunscreen! Even on cloudy days. Your morning moisturizer should contain:</p>
+                    <ul>
+                        <li><strong>SPF 30+:</strong> Minimum protection</li>
+                        <li><strong>Hyaluronic acid:</strong> Hydration boost</li>
+                        <li><strong>Niacinamide:</strong> Reduces redness and pores</li>
+                    </ul>
+                    
+                    <p>This simple routine takes less than 5 minutes but makes a world of difference. Consistency is key - stick with it for at least 4 weeks to see visible results.</p>
+                `
+            },
+            2: {
+                title: "Retinol: Beginner's Guide",
+                author: "The GlowLab Team",
+                readTime: "7 min read",
+                content: `
+                    <h2>How to Start Using Retinol Safely</h2>
+                    <p>Retinol is one of the most effective anti-aging ingredients, but it can be intimidating for beginners. Here's your complete guide:</p>
+                    
+                    <h3>What is Retinol?</h3>
+                    <p>Retinol is a form of Vitamin A that speeds up cell turnover, increases collagen production, and helps with:</p>
+                    <ul>
+                        <li>Fine lines and wrinkles</li>
+                        <li>Acne and breakouts</li>
+                        <li>Uneven skin tone and texture</li>
+                        <li>Hyperpigmentation</li>
+                    </ul>
+                    
+                    <h3>The Golden Rule: Start Low, Go Slow</h3>
+                    <p>Begin with a low concentration (0.25% or 0.3%) and use it only 1-2 times per week. Gradually increase frequency as your skin adjusts.</p>
+                    
+                    <div class="article-tip">
+                        <strong>Warning:</strong> Never start retinol during summer or before sun exposure. Always use sunscreen!
+                    </div>
+                    
+                    <h3>Application Technique</h3>
+                    <p>1. Cleanse and tone your skin<br>
+                    2. Wait 10-15 minutes for skin to dry completely<br>
+                    3. Apply a pea-sized amount to entire face<br>
+                    4. Avoid eye area and corners of mouth<br>
+                    5. Follow with moisturizer</p>
+                    
+                    <h3>Common Side Effects (The "Retinol Uglies")</h3>
+                    <p>Initial reactions may include:</p>
+                    <ul>
+                        <li>Dryness and flaking</li>
+                        <li>Redness and irritation</li>
+                        <li>Increased sensitivity</li>
+                        <li>Purge breakouts (temporary)</li>
+                    </ul>
+                    <p>These usually subside within 2-6 weeks as your skin adjusts.</p>
+                    
+                    <h3>What to Avoid</h3>
+                    <p>Don't mix retinol with:</p>
+                    <ul>
+                        <li>Vitamin C (use in morning instead)</li>
+                        <li>Benzoyl peroxide (cancels each other out)</li>
+                        <li>Other strong actives (AHA/BHA)</li>
+                    </ul>
+                    
+                    <p>Be patient! It takes 3-6 months to see significant results with retinol.</p>
+                `
+            },
+            3: {
+                title: "Ingredients to Avoid on Sensitive Skin",
+                author: "Dr. Zulu of GlowLab Team",
+                readTime: "5 min read",
+                content: `
+                    <h2>Sensitive Skin Survival Guide</h2>
+                    <p>If you have sensitive skin, choosing the right products is crucial. Here are ingredients to avoid and what to use instead:</p>
+                    
+                    <h3>Top 5 Ingredients to Avoid</h3>
+                    <p><strong>1. Fragrance (Parfum):</strong> The #1 irritant for sensitive skin. Both synthetic and natural fragrances can cause reactions.</p>
+                    <p><strong>2. Alcohol (Denatured/Ethanol):</strong> Dries out skin and damages the moisture barrier. Look for fatty alcohols instead (cetyl, stearyl).</p>
+                    <p><strong>3. Essential Oils:</strong> While natural, they're highly concentrated and can cause irritation, especially citrus oils.</p>
+                    <p><strong>4. Sulfates (SLS/SLES):</strong> Harsh cleansers that strip natural oils, leading to dryness and irritation.</p>
+                    <p><strong>5. Physical Scrubs:</strong> Avoid walnut shells, apricot pits, or large beads that can cause micro-tears.</p>
+                    
+                    <div class="article-tip">
+                        <strong>Remember:</strong> "Natural" doesn't always mean better for sensitive skin. Poison ivy is natural too!
+                    </div>
+                    
+                    <h3>Safer Alternatives</h3>
+                    <p>Instead of harsh ingredients, look for these gentle alternatives:</p>
+                    
+                    <h4>For Cleansing:</h4>
+                    <ul>
+                        <li><strong>Cream or milk cleansers</strong> instead of foaming cleansers</li>
+                        <li><strong>Micellar water</strong> for gentle makeup removal</li>
+                        <li><strong>Oil cleansers</strong> that dissolve impurities without stripping</li>
+                    </ul>
+                    
+                    <h4>For Exfoliation:</h4>
+                    <ul>
+                        <li><strong>PHA (Polyhydroxy Acids):</strong> Gentler than AHA/BHA</li>
+                        <li><strong>Enzyme exfoliants:</strong> Papain or bromelain</li>
+                        <li><strong>Low percentage mandelic acid:</strong> Larger molecules don't penetrate as deeply</li>
+                    </ul>
+                    
+                    <h3>Patch Testing 101</h3>
+                    <p>Always patch test new products:</p>
+                    <ol>
+                        <li>Apply a small amount behind ear or inner arm</li>
+                        <li>Wait 24-48 hours</li>
+                        <li>Check for redness, itching, or swelling</li>
+                        <li>If no reaction, test on jawline before full face</li>
+                    </ol>
+                    
+                    <h3>Building a Sensitive Skin Routine</h3>
+                    <p>Keep it simple: Cleanse → Treat → Moisturize → Protect<br>
+                    Introduce new products one at a time, with 2 weeks between each new addition.</p>
+                    
+                    <p>Remember, sensitive skin needs extra love and patience. When in doubt, less is more!</p>
+                `
+            }
+        };
+        
+        this.init();
+    }
+    
+    init() {
+        this.setupArticleListeners();
+    }
+    
+    setupArticleListeners() {
+        // Read article links
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.read-more')) {
+                e.preventDefault();
+                const link = e.target.closest('.read-more');
+                const articleId = link.dataset.article;
+                this.showArticle(articleId);
+            }
+        });
+        
+        // Create article modal if it doesn't exist
+        if (!document.querySelector('.article-modal')) {
+            const articleModalHTML = `
+                <div class="article-modal" id="articleModal">
+                    <div class="article-content">
+                        <div class="article-header">
+                            <h3 id="article-title"></h3>
+                            <button class="close-article">&times;</button>
+                        </div>
+                        <div class="article-body" id="article-body"></div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', articleModalHTML);
+            
+            // Close article modal
+            document.querySelector('.close-article').addEventListener('click', () => {
+                this.hideArticle();
+            });
+            
+            // Close when clicking outside
+            document.querySelector('.article-modal').addEventListener('click', (e) => {
+                if (e.target.classList.contains('article-modal')) {
+                    this.hideArticle();
+                }
+            });
+            
+            // Close with Escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && document.querySelector('.article-modal').classList.contains('active')) {
+                    this.hideArticle();
+                }
+            });
+        }
+    }
+    
+    showArticle(articleId) {
+        const article = this.articles[articleId];
+        if (!article) return;
+        
+        document.getElementById('article-title').textContent = article.title;
+        document.getElementById('article-body').innerHTML = `
+            <p class="blog-meta">By ${article.author} • ${article.readTime}</p>
+            ${article.content}
+        `;
+        
+        document.querySelector('.article-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    
+    hideArticle() {
+        document.querySelector('.article-modal').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+}
+
+// ===== WEBSITE FEATURES =====
 class WebsiteFeatures {
     constructor() {
         this.init();
@@ -429,7 +681,7 @@ class WebsiteFeatures {
                 const href = this.getAttribute('href');
                 
                 // Skip cart and empty links
-                if (href === '#cart' || href === '#') return;
+                if (href === '#cart' || href === '#' || href.includes('article')) return;
                 
                 e.preventDefault();
                 
@@ -482,12 +734,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize shopping cart
     const cart = new ShoppingCart();
     
+    // Initialize article system
+    const articles = new ArticleSystem();
+    
     // Initialize website features
     const features = new WebsiteFeatures();
     
     // Welcome message
     console.log('✨ GlowLab Skincare Website Loaded!');
-    console.log('🇿🇦 South African Rands (ZAR) currency enabled');
+    console.log('🎨 Green & Purple Theme Applied');
+    console.log('📚 Article System Ready');
     console.log('🛒 Cart items:', cart.items.length);
     
     // Add cart persistence message
