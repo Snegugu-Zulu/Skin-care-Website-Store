@@ -250,12 +250,25 @@ nav a.active::after {
     min-height: 70px;
 }
 
+/* ===== PRICE STYLING WITH SINGLE R ===== */
 .product-price {
     font-size: 1.8rem;
     font-weight: bold;
     color: #00b894;
     margin: 15px 0 20px;
     text-align: center;
+    position: relative;
+    padding-left: 1.2em;
+}
+
+/* Add R symbol before price */
+.product-price::before {
+    content: 'R';
+    position: absolute;
+    left: 0;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #00b894;
 }
 
 .add-to-cart {
@@ -350,6 +363,12 @@ nav a.active::after {
     color: #2d3436;
 }
 
+/* Add R to cart total */
+.total-amount::before {
+    content: 'R';
+    margin-right: 2px;
+}
+
 .checkout-btn, .clear-cart {
     width: 100%;
     padding: 12px;
@@ -378,6 +397,103 @@ nav a.active::after {
 .clear-cart:hover {
     background: #b2bec3;
     color: white;
+}
+
+/* ===== CART ITEM STYLING ===== */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #00b894;
+}
+
+.cart-item-info h4 {
+    margin-bottom: 5px;
+    color: #2d3436;
+    font-size: 1rem;
+}
+
+.cart-item-info p {
+    color: #636e72;
+    font-size: 0.9rem;
+    margin-bottom: 3px;
+}
+
+/* Add R to cart item prices */
+.cart-item-info p::before {
+    content: 'R';
+    margin-right: 2px;
+}
+
+.item-subtotal {
+    font-weight: bold;
+    color: #00b894 !important;
+}
+
+.item-subtotal::before {
+    content: 'R';
+    margin-right: 2px;
+}
+
+.cart-item-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: #00b894;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-btn:hover {
+    background: #00a085;
+}
+
+.quantity-display {
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.remove-item {
+    background: #e17055;
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-item:hover {
+    background: #d65b40;
 }
 
 /* ===== BLOG SECTION ===== */
@@ -543,6 +659,151 @@ footer {
     margin-bottom: 10px;
 }
 
+/* ===== NOTIFICATION STYLES ===== */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #00b894;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 5px 20px rgba(0, 184, 148, 0.3);
+    z-index: 10000;
+    animation: slideIn 0.3s ease;
+    max-width: 350px;
+}
+
+.notification i {
+    font-size: 1.2rem;
+}
+
+.fade-out {
+    animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
+/* ===== PAYMENT MODAL ===== */
+.payment-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.payment-modal.active {
+    display: flex;
+}
+
+.payment-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.payment-header h3 {
+    color: #2d3436;
+}
+
+.close-payment {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #636e72;
+}
+
+.payment-details {
+    margin: 20px 0;
+}
+
+.payment-details p {
+    margin-bottom: 10px;
+    color: #636e72;
+}
+
+.payment-details strong {
+    color: #2d3436;
+}
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.payment-option {
+    padding: 15px;
+    border: 2px solid #dfe6e9;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-option:hover {
+    border-color: #00b894;
+    background: rgba(0, 184, 148, 0.05);
+}
+
+.payment-option.selected {
+    border-color: #00b894;
+    background: rgba(0, 184, 148, 0.1);
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 15px;
+    background: #00b894;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+.pay-btn:hover {
+    background: #00a085;
+}
+
+.pay-btn:disabled {
+    background: #b2bec3;
+    cursor: not-allowed;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
     .about-content {
@@ -586,6 +847,11 @@ footer {
     .footer-col a {
         justify-content: center;
     }
+    
+    .payment-content {
+        width: 95%;
+        padding: 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -605,6 +871,17 @@ footer {
     .btn-primary, .btn-secondary {
         width: 100%;
         text-align: center;
+    }
+    
+    .cart-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    
+    .cart-item-controls {
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
 
