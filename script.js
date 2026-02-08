@@ -424,7 +424,7 @@ class ShoppingCart {
     }
 }
 
-// ===== ARTICLE SYSTEM - WITH WORKING CLOSE BUTTON =====
+// ===== ARTICLE SYSTEM - FIXED CLOSE FUNCTIONALITY =====
 class ArticleSystem {
     constructor() {
         this.articles = {
@@ -522,7 +522,7 @@ class ArticleSystem {
             },
             3: {
                 title: "Ingredients to Avoid on Sensitive Skin",
-                author: "Dr. Zulu of GlowLab Team",
+                author: "Dr S.S. Zulu of GlowLab Team",
                 readTime: "5 min read",
                 content: `
                     <h2>Sensitive Skin Survival Guide</h2>
@@ -592,29 +592,19 @@ class ArticleSystem {
             }
         });
         
-        // Create article modal if it doesn't exist
-        if (!document.querySelector('.article-modal')) {
-            const articleModalHTML = `
-                <div class="article-modal" id="articleModal">
-                    <div class="article-content">
-                        <div class="article-header">
-                            <h3 id="article-title"></h3>
-                            <button class="close-article">&times;</button>
-                        </div>
-                        <div class="article-body" id="article-body"></div>
-                    </div>
-                </div>
-            `;
-            document.body.insertAdjacentHTML('beforeend', articleModalHTML);
-            
-            // FIXED: Close article modal - proper event listener
-            document.querySelector('.close-article').addEventListener('click', () => {
+        // Get the modal and close button (they already exist in HTML)
+        const closeArticleBtn = document.querySelector('.close-article');
+        const articleModal = document.getElementById('articleModal');
+        
+        if (closeArticleBtn && articleModal) {
+            // Fix: Use arrow function to maintain 'this' context
+            closeArticleBtn.addEventListener('click', () => {
                 this.hideArticle();
             });
             
             // Close when clicking outside modal
-            document.querySelector('.article-modal').addEventListener('click', (e) => {
-                if (e.target.classList.contains('article-modal')) {
+            articleModal.addEventListener('click', (e) => {
+                if (e.target === articleModal) {
                     this.hideArticle();
                 }
             });
@@ -622,12 +612,13 @@ class ArticleSystem {
             // Close with Escape key
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    const articleModal = document.querySelector('.article-modal');
-                    if (articleModal && articleModal.classList.contains('active')) {
+                    if (articleModal.classList.contains('active')) {
                         this.hideArticle();
                     }
                 }
             });
+        } else {
+            console.error('Article modal or close button not found in HTML!');
         }
     }
     
@@ -642,14 +633,20 @@ class ArticleSystem {
         `;
         
         // Show modal
-        document.querySelector('.article-modal').classList.add('active');
-        document.body.style.overflow = 'hidden';
+        const articleModal = document.getElementById('articleModal');
+        if (articleModal) {
+            articleModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
     
     hideArticle() {
         // Hide modal
-        document.querySelector('.article-modal').classList.remove('active');
-        document.body.style.overflow = '';
+        const articleModal = document.getElementById('articleModal');
+        if (articleModal) {
+            articleModal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
     }
 }
 
