@@ -522,7 +522,7 @@ class ArticleSystem {
             },
             3: {
                 title: "Ingredients to Avoid on Sensitive Skin",
-                author: "Dr S.S. Zulu of GlowLab Team",
+                author: "Snegugu Zulu of GlowLab Team",
                 readTime: "5 min read",
                 content: `
                     <h2>Sensitive Skin Survival Guide</h2>
