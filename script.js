@@ -7,9 +7,8 @@ class ShoppingCart {
         this.setupEventListeners();
     }
     
-    // Add item to cart - FIXED: Now properly adds all items
+    // Add item to cart
     addItem(id, name, price, quantity = 1) {
-        // Convert id to string to ensure consistent comparison
         const itemId = id.toString();
         const existingItem = this.items.find(item => item.id === itemId);
         
@@ -95,7 +94,7 @@ class ShoppingCart {
         }
     }
     
-    // Render cart items - FIXED: Now shows all items properly
+    // Render cart items
     renderCart() {
         const cartItems = document.querySelector('.cart-items');
         const emptyCart = cartItems ? cartItems.querySelector('.empty-cart') : null;
@@ -139,13 +138,13 @@ class ShoppingCart {
         cartItems.innerHTML = cartHTML;
         totalAmount.textContent = this.formatPrice(this.getTotal());
         
-        // Re-attach event listeners to new buttons
+        // Re-attach event listeners
         this.setupCartItemListeners();
     }
     
     // Setup main event listeners
     setupEventListeners() {
-        // Add to cart buttons - FIXED: Event delegation for dynamically added elements
+        // Add to cart buttons
         document.addEventListener('click', (e) => {
             if (e.target.closest('.add-to-cart')) {
                 const button = e.target.closest('.add-to-cart');
@@ -155,7 +154,7 @@ class ShoppingCart {
                 
                 this.addItem(id, name, price);
                 
-                // Add button animation
+                // Button animation
                 const originalHTML = button.innerHTML;
                 button.innerHTML = '<i class="fas fa-check"></i> Added!';
                 button.style.background = '#27ae60';
@@ -195,7 +194,7 @@ class ShoppingCart {
             });
         }
         
-        // Checkout button - Shows payment modal
+        // Checkout button
         const checkoutBtn = document.querySelector('.checkout-btn');
         if (checkoutBtn) {
             checkoutBtn.addEventListener('click', () => {
@@ -357,11 +356,8 @@ class ShoppingCart {
         // Payment method selection
         paymentOptions.forEach(option => {
             option.addEventListener('click', () => {
-                // Remove selected class from all options
                 paymentOptions.forEach(opt => opt.classList.remove('selected'));
-                // Add selected class to clicked option
                 option.classList.add('selected');
-                // Enable pay button
                 payBtn.disabled = false;
                 const methodName = option.querySelector('span').textContent;
                 payBtn.textContent = `Pay R${this.formatPrice(this.getTotal())} with ${methodName}`;
@@ -373,7 +369,6 @@ class ShoppingCart {
             const selectedMethod = document.querySelector('.payment-option.selected');
             if (!selectedMethod) return;
             
-            const method = selectedMethod.dataset.method;
             const total = this.getTotal();
             
             // Disable button during processing
@@ -382,7 +377,6 @@ class ShoppingCart {
             
             // Simulate payment processing
             setTimeout(() => {
-                // Success!
                 this.showNotification(`Payment successful! Thank you for your order of R${this.formatPrice(total)}`);
                 
                 // Clear cart
@@ -405,13 +399,11 @@ class ShoppingCart {
     
     // Show notification
     showNotification(message) {
-        // Remove existing notification
         const existingNotification = document.querySelector('.notification');
         if (existingNotification) {
             existingNotification.remove();
         }
         
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = 'notification';
         notification.innerHTML = `
@@ -419,10 +411,8 @@ class ShoppingCart {
             <span>${message}</span>
         `;
         
-        // Add to body
         document.body.appendChild(notification);
         
-        // Remove after 3 seconds
         setTimeout(() => {
             notification.classList.add('fade-out');
             setTimeout(() => {
@@ -434,7 +424,7 @@ class ShoppingCart {
     }
 }
 
-// ===== ARTICLE SYSTEM =====
+// ===== ARTICLE SYSTEM - WITH WORKING CLOSE BUTTON =====
 class ArticleSystem {
     constructor() {
         this.articles = {
@@ -617,12 +607,12 @@ class ArticleSystem {
             `;
             document.body.insertAdjacentHTML('beforeend', articleModalHTML);
             
-            // Close article modal
+            // FIXED: Close article modal - proper event listener
             document.querySelector('.close-article').addEventListener('click', () => {
                 this.hideArticle();
             });
             
-            // Close when clicking outside
+            // Close when clicking outside modal
             document.querySelector('.article-modal').addEventListener('click', (e) => {
                 if (e.target.classList.contains('article-modal')) {
                     this.hideArticle();
@@ -631,8 +621,11 @@ class ArticleSystem {
             
             // Close with Escape key
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && document.querySelector('.article-modal').classList.contains('active')) {
-                    this.hideArticle();
+                if (e.key === 'Escape') {
+                    const articleModal = document.querySelector('.article-modal');
+                    if (articleModal && articleModal.classList.contains('active')) {
+                        this.hideArticle();
+                    }
                 }
             });
         }
@@ -648,11 +641,13 @@ class ArticleSystem {
             ${article.content}
         `;
         
+        // Show modal
         document.querySelector('.article-modal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
     hideArticle() {
+        // Hide modal
         document.querySelector('.article-modal').classList.remove('active');
         document.body.style.overflow = '';
     }
@@ -665,13 +660,8 @@ class WebsiteFeatures {
     }
     
     init() {
-        // Smooth scrolling for anchor links
         this.setupSmoothScrolling();
-        
-        // Update copyright year
         this.updateCopyrightYear();
-        
-        // Initialize product interactions
         this.setupProductInteractions();
     }
     
@@ -679,15 +669,10 @@ class WebsiteFeatures {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 const href = this.getAttribute('href');
-                
-                // Skip cart and empty links
                 if (href === '#cart' || href === '#' || href.includes('article')) return;
-                
                 e.preventDefault();
-                
                 const targetId = href.substring(1);
                 const targetElement = document.getElementById(targetId);
-                
                 if (targetElement) {
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
@@ -707,29 +692,24 @@ class WebsiteFeatures {
     }
     
     setupProductInteractions() {
-        // Add hover effect to product cards
         const productCards = document.querySelectorAll('.product-card');
         productCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
                 const button = card.querySelector('.add-to-cart');
-                if (button) {
-                    button.style.transform = 'scale(1.05)';
-                }
+                if (button) button.style.transform = 'scale(1.05)';
                 card.style.boxShadow = '0 15px 35px rgba(0,0,0,0.15)';
             });
             
             card.addEventListener('mouseleave', () => {
                 const button = card.querySelector('.add-to-cart');
-                if (button) {
-                    button.style.transform = 'scale(1)';
-                }
+                if (button) button.style.transform = 'scale(1)';
                 card.style.boxShadow = '0 5px 15px rgba(0,0,0,0.1)';
             });
         });
     }
 }
 
-// ===== INITIALIZE EVERYTHING WHEN PAGE LOADS =====
+// ===== INITIALIZE EVERYTHING =====
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize shopping cart
     const cart = new ShoppingCart();
@@ -740,19 +720,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize website features
     const features = new WebsiteFeatures();
     
-    // Welcome message
     console.log('✨ GlowLab Skincare Website Loaded!');
     console.log('🎨 Green & Purple Theme Applied');
     console.log('📚 Article System Ready');
     console.log('🛒 Cart items:', cart.items.length);
     
-    // Add cart persistence message
     if (cart.items.length > 0) {
         console.log(`🔄 Cart restored from previous session: ${cart.items.length} items`);
     }
 });
 
-// South African VAT calculator (15% VAT)
+// South African VAT calculator
 function calculateVAT(amount) {
     const vatRate = 0.15;
     const vatAmount = amount * vatRate;
