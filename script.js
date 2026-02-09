@@ -1,4 +1,3 @@
-// ===== SHOPPING CART FUNCTIONALITY =====
 class ShoppingCart {
     constructor() {
         this.items = JSON.parse(localStorage.getItem('glowlab-cart')) || [];
@@ -7,7 +6,6 @@ class ShoppingCart {
         this.setupEventListeners();
     }
     
-    // Add item to cart
     addItem(id, name, price, quantity = 1) {
         const itemId = id.toString();
         const existingItem = this.items.find(item => item.id === itemId);
@@ -29,7 +27,6 @@ class ShoppingCart {
         this.showNotification(`${name} added to cart!`);
     }
     
-    // Remove item from cart
     removeItem(id) {
         const itemId = id.toString();
         this.items = this.items.filter(item => item.id !== itemId);
@@ -39,7 +36,6 @@ class ShoppingCart {
         this.showNotification('Item removed from cart');
     }
     
-    // Update item quantity
     updateQuantity(id, quantity) {
         const itemId = id.toString();
         const item = this.items.find(item => item.id === itemId);
@@ -54,7 +50,6 @@ class ShoppingCart {
         }
     }
     
-    // Clear entire cart
     clearCart() {
         if (this.items.length === 0) return;
         
@@ -65,27 +60,23 @@ class ShoppingCart {
         this.showNotification('Cart cleared!');
     }
     
-    // Calculate cart total
     getTotal() {
         return this.items.reduce((total, item) => {
             return total + (item.price * item.quantity);
         }, 0);
     }
     
-    // Format price
     formatPrice(amount) {
         if (amount >= 1000) {
             return amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
         return amount.toFixed(2);
     }
-    
-    // Save cart to localStorage
+
     saveCart() {
         localStorage.setItem('glowlab-cart', JSON.stringify(this.items));
     }
     
-    // Update cart count in header
     updateCartCount() {
         const totalItems = this.items.reduce((sum, item) => sum + item.quantity, 0);
         const cartCountElement = document.querySelector('.cart-count');
@@ -94,7 +85,6 @@ class ShoppingCart {
         }
     }
     
-    // Render cart items
     renderCart() {
         const cartItems = document.querySelector('.cart-items');
         const emptyCart = cartItems ? cartItems.querySelector('.empty-cart') : null;
@@ -138,13 +128,10 @@ class ShoppingCart {
         cartItems.innerHTML = cartHTML;
         totalAmount.textContent = this.formatPrice(this.getTotal());
         
-        // Re-attach event listeners
         this.setupCartItemListeners();
     }
     
-    // Setup main event listeners
     setupEventListeners() {
-        // Add to cart buttons
         document.addEventListener('click', (e) => {
             if (e.target.closest('.add-to-cart')) {
                 const button = e.target.closest('.add-to-cart');
@@ -154,7 +141,6 @@ class ShoppingCart {
                 
                 this.addItem(id, name, price);
                 
-                // Button animation
                 const originalHTML = button.innerHTML;
                 button.innerHTML = '<i class="fas fa-check"></i> Added!';
                 button.style.background = '#27ae60';
@@ -165,7 +151,6 @@ class ShoppingCart {
             }
         });
         
-        // Cart toggle button
         const cartBtn = document.querySelector('.cart-btn');
         if (cartBtn) {
             cartBtn.addEventListener('click', (e) => {
@@ -175,7 +160,6 @@ class ShoppingCart {
             });
         }
         
-        // Close cart button
         const closeCart = document.querySelector('.close-cart');
         if (closeCart) {
             closeCart.addEventListener('click', () => {
@@ -184,7 +168,6 @@ class ShoppingCart {
             });
         }
         
-        // Clear cart button
         const clearCartBtn = document.querySelector('.clear-cart');
         if (clearCartBtn) {
             clearCartBtn.addEventListener('click', () => {
@@ -194,7 +177,6 @@ class ShoppingCart {
             });
         }
         
-        // Checkout button
         const checkoutBtn = document.querySelector('.checkout-btn');
         if (checkoutBtn) {
             checkoutBtn.addEventListener('click', () => {
@@ -207,7 +189,6 @@ class ShoppingCart {
             });
         }
         
-        // Close cart when clicking outside
         document.addEventListener('click', (e) => {
             const cart = document.querySelector('.cart-sidebar');
             const cartBtn = document.querySelector('.cart-btn');
@@ -220,7 +201,6 @@ class ShoppingCart {
             }
         });
         
-        // Close cart with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 const cart = document.querySelector('.cart-sidebar');
@@ -232,9 +212,7 @@ class ShoppingCart {
         });
     }
     
-    // Setup cart item event listeners
     setupCartItemListeners() {
-        // Quantity minus buttons
         document.querySelectorAll('.quantity-btn.minus').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = e.target.closest('.quantity-btn').dataset.id;
@@ -245,7 +223,6 @@ class ShoppingCart {
             });
         });
         
-        // Quantity plus buttons
         document.querySelectorAll('.quantity-btn.plus').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = e.target.closest('.quantity-btn').dataset.id;
@@ -256,7 +233,6 @@ class ShoppingCart {
             });
         });
         
-        // Remove item buttons
         document.querySelectorAll('.remove-item').forEach(button => {
             button.addEventListener('click', (e) => {
                 const id = e.target.closest('.remove-item').dataset.id;
@@ -267,9 +243,7 @@ class ShoppingCart {
         });
     }
     
-    // Show payment modal
     showPaymentModal() {
-        // Create payment modal if it doesn't exist
         if (!document.querySelector('.payment-modal')) {
             const paymentModalHTML = `
                 <div class="payment-modal">
@@ -313,16 +287,13 @@ class ShoppingCart {
             
             document.body.insertAdjacentHTML('beforeend', paymentModalHTML);
             
-            // Add payment modal event listeners
             this.setupPaymentModalListeners();
         }
         
-        // Show the modal
         document.querySelector('.payment-modal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
     
-    // Setup payment modal event listeners
     setupPaymentModalListeners() {
         const paymentModal = document.querySelector('.payment-modal');
         const closePayment = document.querySelector('.close-payment');
@@ -331,13 +302,11 @@ class ShoppingCart {
         
         if (!paymentModal || !closePayment || !payBtn) return;
         
-        // Close modal
         closePayment.addEventListener('click', () => {
             paymentModal.classList.remove('active');
             document.body.style.overflow = '';
         });
         
-        // Close modal when clicking outside
         paymentModal.addEventListener('click', (e) => {
             if (e.target === paymentModal) {
                 paymentModal.classList.remove('active');
@@ -345,7 +314,6 @@ class ShoppingCart {
             }
         });
         
-        // Close with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && paymentModal.classList.contains('active')) {
                 paymentModal.classList.remove('active');
@@ -353,7 +321,6 @@ class ShoppingCart {
             }
         });
         
-        // Payment method selection
         paymentOptions.forEach(option => {
             option.addEventListener('click', () => {
                 paymentOptions.forEach(opt => opt.classList.remove('selected'));
@@ -364,40 +331,32 @@ class ShoppingCart {
             });
         });
         
-        // Pay button
         payBtn.addEventListener('click', () => {
             const selectedMethod = document.querySelector('.payment-option.selected');
             if (!selectedMethod) return;
             
             const total = this.getTotal();
-            
-            // Disable button during processing
+      
             payBtn.disabled = true;
             payBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-            
-            // Simulate payment processing
+
             setTimeout(() => {
                 this.showNotification(`Payment successful! Thank you for your order of R${this.formatPrice(total)}`);
-                
-                // Clear cart
+    
                 this.clearCart();
-                
-                // Close modals
+
                 paymentModal.classList.remove('active');
                 const cart = document.querySelector('.cart-sidebar');
                 if (cart) cart.classList.remove('active');
                 document.body.style.overflow = '';
                 
-                // Show order confirmation
                 alert(`🎉 Order Confirmed!\n\nThank you for shopping with GlowLab!\n\n📦 Order Total: R${this.formatPrice(total)}\n💳 Payment Method: ${selectedMethod.querySelector('span').textContent}\n📧 Order confirmation sent to email\n🚚 Delivery: 3-5 business days\n\nWe'll send tracking information soon!`);
                 
-                // Remove payment modal
                 paymentModal.remove();
             }, 2000);
         });
     }
     
-    // Show notification
     showNotification(message) {
         const existingNotification = document.querySelector('.notification');
         if (existingNotification) {
@@ -424,7 +383,6 @@ class ShoppingCart {
     }
 }
 
-// ===== ARTICLE SYSTEM - FIXED CLOSE FUNCTIONALITY =====
 class ArticleSystem {
     constructor() {
         this.articles = {
@@ -582,7 +540,6 @@ class ArticleSystem {
     }
     
     setupArticleListeners() {
-        // Read article links
         document.addEventListener('click', (e) => {
             if (e.target.closest('.read-more')) {
                 e.preventDefault();
@@ -592,24 +549,20 @@ class ArticleSystem {
             }
         });
         
-        // Get the modal and close button (they already exist in HTML)
         const closeArticleBtn = document.querySelector('.close-article');
         const articleModal = document.getElementById('articleModal');
         
         if (closeArticleBtn && articleModal) {
-            // Fix: Use arrow function to maintain 'this' context
             closeArticleBtn.addEventListener('click', () => {
                 this.hideArticle();
             });
-            
-            // Close when clicking outside modal
+   
             articleModal.addEventListener('click', (e) => {
                 if (e.target === articleModal) {
                     this.hideArticle();
                 }
             });
-            
-            // Close with Escape key
+       
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     if (articleModal.classList.contains('active')) {
@@ -631,8 +584,7 @@ class ArticleSystem {
             <p class="blog-meta">By ${article.author} • ${article.readTime}</p>
             ${article.content}
         `;
-        
-        // Show modal
+ 
         const articleModal = document.getElementById('articleModal');
         if (articleModal) {
             articleModal.classList.add('active');
@@ -641,7 +593,6 @@ class ArticleSystem {
     }
     
     hideArticle() {
-        // Hide modal
         const articleModal = document.getElementById('articleModal');
         if (articleModal) {
             articleModal.classList.remove('active');
@@ -650,7 +601,6 @@ class ArticleSystem {
     }
 }
 
-// ===== WEBSITE FEATURES =====
 class WebsiteFeatures {
     constructor() {
         this.init();
@@ -706,15 +656,11 @@ class WebsiteFeatures {
     }
 }
 
-// ===== INITIALIZE EVERYTHING =====
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize shopping cart
     const cart = new ShoppingCart();
     
-    // Initialize article system
     const articles = new ArticleSystem();
     
-    // Initialize website features
     const features = new WebsiteFeatures();
     
     console.log('✨ GlowLab Skincare Website Loaded!');
@@ -727,7 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// South African VAT calculator
 function calculateVAT(amount) {
     const vatRate = 0.15;
     const vatAmount = amount * vatRate;
